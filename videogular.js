@@ -171,7 +171,8 @@ angular.module("com.2fdevs.videogular")
 
         this.onCanPlay = function (evt) {
             this.isBuffering = false;
-            $scope.$apply($scope.vgCanPlay({$event: evt}));
+            $scope.vgCanPlay({$event: evt})
+            $scope.$parent.$digest();
 
             if (!hasStartTimePlayed && (this.startTime > 0 || this.startTime === 0)) {
                 this.seekTime(this.startTime);
@@ -233,7 +234,7 @@ angular.module("com.2fdevs.videogular")
         this.onProgress = function (event) {
             this.updateBuffer(event);
 
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.updateBuffer = function getBuffer(event) {
@@ -288,13 +289,15 @@ angular.module("com.2fdevs.videogular")
 
             // NB in conjunction with the updateTime interval in videogular-youtube, this triggers the
             // digest cycle every 600ms which essentially kills performance.
+            // @see https://github.com/videogular/videogular/issues/293
             //
-            // See https://github.com/videogular/videogular/issues/263 for side effects of removing this.
+            // Use $scope.$parent.$digest() instead of a global $scope.$apply.
+            // @see https://github.com/videogular/videogular/issues/263
             //
-            // Safe apply just in case we're calling from a non-event
-            // if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-            //     $scope.$apply();
-            // }
+            // Safe digest just in case we're calling from a non-event
+            if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+                $scope.$parent.$digest();
+            }
         };
 
         this.checkCuePoints = function checkCuePoints(currentTime) {
@@ -351,7 +354,7 @@ angular.module("com.2fdevs.videogular")
 
         this.onPlay = function () {
             this.setState(VG_STATES.PLAY);
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onPause = function () {
@@ -364,17 +367,17 @@ angular.module("com.2fdevs.videogular")
                 this.setState(VG_STATES.PAUSE);
             }
 
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onVolumeChange = function () {
             this.volume = this.mediaElement[0].volume;
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onPlaybackChange = function () {
             this.playback = this.mediaElement[0].playbackRate;
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onSeeking = function (event) {
@@ -570,12 +573,12 @@ angular.module("com.2fdevs.videogular")
 
         this.onStartBuffering = function (event) {
             this.isBuffering = true;
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onStartPlaying = function (event) {
             this.isBuffering = false;
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onComplete = function (event) {
@@ -588,7 +591,7 @@ angular.module("com.2fdevs.videogular")
                 this.stop()
             }
 
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         this.onVideoError = function (event) {
@@ -713,7 +716,7 @@ angular.module("com.2fdevs.videogular")
 
         this.onFullScreenChange = function (event) {
             this.isFullScreen = vgFullscreen.isFullScreen();
-            $scope.$apply();
+            $scope.$parent.$digest();
         };
 
         // Empty mediaElement on destroy to avoid that Chrome downloads video even when it's not present
