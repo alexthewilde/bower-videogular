@@ -387,8 +387,12 @@ angular.module("com.2fdevs.videogular")
             $scope.vgSeeked({$currentTime: event.target.currentTime, $duration: event.target.duration});
         };
 
-        this.seekTime = function (value, byPercent) {
+        this.seekTime = function (value, byPercent, userInitiated) {
             var second;
+            if (userInitiated) {
+                $scope.vgUserSeek({$API: this});
+            }
+
             if (byPercent) {
                 if (isVirtualClip) {
                     value = Math.max(0, Math.min(value, 100));
@@ -1330,6 +1334,7 @@ angular.module("com.2fdevs.videogular")
  * @param {function} vgNativeFullscreen Boolean to disable native fullscreen.
  * @param {function} vgSeeking Function name in controller's scope to call when the video has finished jumping to a new time. Receives a param with the seeked time and duration in seconds.
  * @param {function} vgSeeked Function name in controller's scope to call when the video is jumping to a new time. Receives two params with the seeked time and duration in seconds.
+ * @param {function} vgUserSeek Function name in controller's scope to call when the video is jumping to a new time and was initiated by the user (via scrubbar). Receives a param with the videogular API.
  * @param {function} vgError Function name in controller's scope to receive an error from video object. Receives a param with the error event.
  * This is a free parameter and it could be values like "new.mp4", "320" or "sd". This will allow you to use this to change a video or video quality.
  * This callback will not change the video, you should do that by updating your sources scope variable.
@@ -1362,6 +1367,7 @@ angular.module("com.2fdevs.videogular")
                 vgChangeSource: "&",
                 vgSeeking: "&",
                 vgSeeked: "&",
+                vgUserSeek: "&",
                 vgError: "&"
             },
             controller: "vgController",
