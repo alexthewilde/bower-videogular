@@ -579,7 +579,7 @@ angular.module("com.2fdevs.videogular")
         this.onStartPlaying = function (event) {
             this.isBuffering = false;
             this.setState(VG_STATES.PLAY);
-            $scope.$apply();
+            $scope.$apply($scope.vgStartPlaying({$event: event}));
         };
 
         this.onComplete = function (event) {
@@ -1318,6 +1318,7 @@ angular.module("com.2fdevs.videogular")
  }
  * </pre>
  * @param {function} vgCanPlay Function name in controller's scope to call when video is able to begin playback
+ * @param {function} vgStartPlaying Function name in controller's scope to call when playback has started.
  * @param {function} vgComplete Function name in controller's scope to call when video have been completed.
  * @param {function} vgUpdateVolume Function name in controller's scope to call when volume changes. Receives a param with the new volume.
  * @param {function} vgUpdatePlayback Function name in controller's scope to call when playback changes. Receives a param with the new playback rate.
@@ -1351,6 +1352,7 @@ angular.module("com.2fdevs.videogular")
                 vgCuePoints: "=?",
                 vgConfig: "@",
                 vgCanPlay: "&",
+                vgStartPlaying: "&",
                 vgComplete: "&",
                 vgUpdateVolume: "&",
                 vgUpdatePlayback: "&",
