@@ -864,7 +864,9 @@ angular.module("com.2fdevs.videogular")
                         );
                     }
                     else {
-                        scope.$watch(attr.vgCrossorigin, function (newValue, oldValue) {
+                        scope.$watch(function() {
+                            return attr.vgCrossorigin;
+                        }, function (newValue, oldValue) {
                             if ((!crossorigin || newValue != oldValue) && newValue) {
                                 crossorigin = newValue;
                                 scope.setCrossorigin(crossorigin);
@@ -921,7 +923,9 @@ angular.module("com.2fdevs.videogular")
                         );
                     }
                     else {
-                        scope.$watch(attr.vgLoop, function (newValue, oldValue) {
+                        scope.$watch(function() {
+                            return attr.vgLoop;
+                        }, function (newValue, oldValue) {
                             if ((!loop || newValue != oldValue) && newValue) {
                                 loop = newValue;
                                 scope.setLoop(loop);
@@ -1160,7 +1164,9 @@ angular.module("com.2fdevs.videogular")
                         );
                     }
                     else {
-                        scope.$watch(attr.vgNativeControls, function (newValue, oldValue) {
+                        scope.$watch(function() {
+                            return attr.vgNativeControls;
+                        }, function (newValue, oldValue) {
                             if ((!controls || newValue != oldValue) && newValue) {
                                 controls = newValue;
                                 scope.setControls(controls);
@@ -1217,7 +1223,9 @@ angular.module("com.2fdevs.videogular")
                         );
                     }
                     else {
-                        scope.$watch(attr.vgPreload, function (newValue, oldValue) {
+                        scope.$watch(function() {
+                            return attr.vgPreload;
+                        }, function (newValue, oldValue) {
                             if ((!preload || newValue != oldValue) && newValue) {
                                 preload = newValue;
                                 scope.setPreload(preload);
@@ -1340,7 +1348,9 @@ angular.module("com.2fdevs.videogular")
                         );
                     }
                     else {
-                        scope.$watch(attr.vgTracks, function (newValue, oldValue) {
+                        scope.$watch(function() {
+                            return attr.vgTracks;
+                        }, function (newValue, oldValue) {
                             if ((!tracks || newValue != oldValue)) {
                                 scope.setTracks(newValue);
                             }
